@@ -1,0 +1,3 @@
+.card-button {
+  @apply  p-3 bg-zinc-500 rounded w-14 hover:bg-zinc-800;
+}

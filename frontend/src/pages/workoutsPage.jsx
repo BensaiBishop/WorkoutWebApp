@@ -7,7 +7,7 @@ export default function WorkoutsPage() {
   const navigate = useNavigate();
 
   const gotoCreateWorkout = () => {
-    navigate('/workoutCreation');
+    navigate('/creation');
   }
 
 

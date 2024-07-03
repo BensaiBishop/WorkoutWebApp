@@ -14,9 +14,9 @@ import { useLocation } from 'react-router-dom'
 
 const navigation = [
   { name: 'Workouts', href: '/', current: location.pathname === '/'  },
-  { name: 'Friends', href: '/friendsPage', current: location.pathname === '/friendsPage' },
-  { name: 'Groups', href: '/groupsPage', current: location.pathname === '/groupsPage' },
-  { name: 'Events', href: '/eventsPage', current: location.pathname === '/eventsPage' },
+  { name: 'Friends', href: '/friends', current: location.pathname === '/friends' },
+  { name: 'Groups', href: '/groups', current: location.pathname === '/groups' },
+  { name: 'Events', href: '/events', current: location.pathname === '/events' },
 ]
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -113,7 +113,7 @@ export default function Navbar() {
                       <MenuItem>
                         {({ focus }) => (
                           <a
-                            href="#"
+                            href="/signin"
                             className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign In

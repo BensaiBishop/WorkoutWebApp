@@ -43,7 +43,7 @@ const WorkoutsCreation = () => {
     };
     try {
       //dev url will redo when deploying to the web server.
-      const response = await fetch ('http://localhost:3000/workouts',{
+      const response = await fetch ('http://localhost:3000/workout',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

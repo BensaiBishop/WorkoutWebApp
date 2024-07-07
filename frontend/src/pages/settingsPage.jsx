@@ -1,7 +1,9 @@
-export default function SettingsPage() {
+const SettingsPage = () => {
     return (
         <div>
-            <h1>Settings</h1>
+            Settings
         </div>
     )
-}
+};
+
+export default SettingsPage

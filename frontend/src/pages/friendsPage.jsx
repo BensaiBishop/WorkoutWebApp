@@ -1,7 +1,9 @@
-export default function FriendsPage() {
+const FriendsPage = () => {
     return (
         <div>
-            <h1>Friends</h1>
+            Friends
         </div>
     )
-}
+};
+
+export default FriendsPage

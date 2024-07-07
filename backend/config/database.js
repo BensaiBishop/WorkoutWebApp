@@ -12,8 +12,8 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.p
 const db = {
     sequelize,
     Sequelize,
-    User: require('./models/user')(sequelize,Sequelize.DataTypes),
-    Exercise: require('./models/exercise')(sequelize,Sequelize.DataTypes),
+    User: require('../models/user')(sequelize,Sequelize.DataTypes),
+    Exercise: require('../models/exercise')(sequelize,Sequelize.DataTypes),
 }
 
 Object.keys(db).forEach((modelName) => {

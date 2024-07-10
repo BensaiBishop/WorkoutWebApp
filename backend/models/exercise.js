@@ -1,5 +1,7 @@
 'use strict';
-const { Model } = require('sequelize');
+const { 
+  Model 
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Exercise extends Model {
     /**
@@ -13,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Exercise.init({
-    currentDate: DataTypes.DATE,
+    postDate: DataTypes.DATE,
     username: DataTypes.STRING,
-    name: DataTypes.STRING,
+    exerciseName: DataTypes.STRING,
     weight: DataTypes.FLOAT,
     reps: DataTypes.INTEGER,
     sets: DataTypes.INTEGER

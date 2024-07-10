@@ -4,20 +4,23 @@
     "password": "523489671",
     "database": "db-development",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": true
   },
   "test": {
     "username": "postgres",
     "password": "523489671",
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": true
   },
   "production": {
     "username": "postgres",
     "password": "523489671",
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": true
   }
 }

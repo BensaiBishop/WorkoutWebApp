@@ -13,6 +13,7 @@ const SigninPage = () => {
         try {
             const response = await axios.post('http://localhost:3000/signin', {username, password});
             setToken(response.data.token);
+            localStorage.setItem('token', token);
             setMessage('Login successful');
         } catch (error) {
             setMessage(error.response.data.message)
@@ -26,11 +27,13 @@ const SigninPage = () => {
                 <form action="submit" onSubmit={handleSignin} className="w-full max-w-sm">
                     <div className="username mb-6 mt-6">
                         <label htmlFor="username" className="block text-sm leading-6">Username</label>
-                        <input type="text" id="username" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" required value={username}/>
+                        <input type="text" id="username" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
+                        required value={username} onChange={(event) => setUsername(event.target.value)}/>
                     </div>
                     <div className="password mb-6">
                         <label htmlFor="password" className="block text-sm leading-6">Password</label>
-                        <input type="text" id="password" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" required value={password}/>
+                        <input type="text" id="password" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
+                        required value={password} onChange={(event) => setPassword(event.target.value)}/>
                     </div>
                     <button type="submit" className="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-zinc-900 text-white hover:bg-zinc-700 w-full">
                         <span>Sign in to account</span>
@@ -40,6 +43,8 @@ const SigninPage = () => {
                     <a href="/password/reset" className="text-sm hover:underline">Forgot password?</a>
                 </p>
             </div>
+            {message && <p>{message}</p>}
+            {token && <p>Token:{token}</p>}
             <footer className="relative shrink-0 text-white">
                 <div className="space-y-4 text-sm sm:flex sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
                     <p className="text-center sm:text-left">Don't have an account?</p>

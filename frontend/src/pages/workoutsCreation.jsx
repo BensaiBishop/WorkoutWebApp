@@ -36,10 +36,18 @@ const WorkoutsCreation = () => {
   }
 
   const handleSubmit = async () => {
+    const token = localStorage.getItem('token'); 
+
+    if (!token) {
+      alert('User not authenticated, please login'); 
+      return;
+    }
+
     const data = {
-      currentDate : new Date(),
+      postDate : new Date(),
       username,
-      exercises
+      exercises,
+      token
     };
     try {
       //dev url will redo when deploying to the web server.
@@ -47,6 +55,7 @@ const WorkoutsCreation = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(data),
       });

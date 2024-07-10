@@ -9,9 +9,9 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
       <div>Exercise Name</div>
       <input
         type="text"
-        name="name"
+        name="exerciseName"
         placeholder="Exercise"
-        value={exercise.name}
+        value={exercise.exerciseName}
         onChange={(event) => handleChange(index, event)}
         className="block border rounded mb-3 p-2"
       />

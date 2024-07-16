@@ -1,4 +1,4 @@
-const { Exercise, User } =require('../models');
+const { Exercise, User } = require('../models');
 const jwt = require('jsonwebtoken');
 
 async function createWorkout(req, res) {

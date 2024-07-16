@@ -17,7 +17,11 @@ app.use('/',router);
 
 //Start server
 app.listen(port, () => {
-  console.log(`API listening at http://localhost:${port}`);
+  console.log(`
+    
+    API listening at http://localhost:${port}
+    
+    `);
   db.sequelize.sync().then(() => {
     console.log('Database Synced');
   }).catch(error => {

@@ -1,6 +1,6 @@
 'use strict';
-const {
-  Model
+const { 
+  Model 
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Exercise extends Model {
@@ -10,13 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      //define associations here
+      Exercise.belongsTo(models.User, {foreignKey: 'userId'});
     }
   }
   Exercise.init({
-    currentDate: DataTypes.DATE,
+    postDate: DataTypes.DATE,
     username: DataTypes.STRING,
-    name: DataTypes.STRING,
+    exerciseName: DataTypes.STRING,
     weight: DataTypes.FLOAT,
     reps: DataTypes.INTEGER,
     sets: DataTypes.INTEGER

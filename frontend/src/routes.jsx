@@ -7,7 +7,8 @@ import ProfilePage from './pages/profilePage.jsx'
 import FriendsPage from './pages/friendsPage.jsx'
 import SettingsPage from './pages/settingsPage.jsx'
 import WorkoutsCreation from './pages/workoutsCreation.jsx'
-import SigninPage from './pages/signInPage.jsx'
+import SigninPage from './pages/signinPage.jsx'
+import RegisterPage from './pages/registerPage.jsx'
 
 const router = createBrowserRouter([
     {
@@ -15,13 +16,14 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: '/', element: <WorkoutsPage /> },
-            { path: '/friendsPage', element: <FriendsPage /> },
-            { path: '/groupsPage', element: <GroupsPage /> },
-            { path: '/eventsPage', element: <EventsPage /> },
-            { path: '/profilePage', element: <ProfilePage /> },
-            { path: '/settingsPage', element: <SettingsPage /> },
-            { path: '/workoutCreation', element: <WorkoutsCreation />},
-            { path: '/signInPage', element: <SigninPage />},
+            { path: '/friends', element: <FriendsPage /> },
+            { path: '/groups', element: <GroupsPage /> },
+            { path: '/events', element: <EventsPage /> },
+            { path: '/profile', element: <ProfilePage /> },
+            { path: '/settings', element: <SettingsPage /> },
+            { path: '/creation', element: <WorkoutsCreation />},
+            { path: '/signin', element: <SigninPage />},
+            { path: '/register', element: < RegisterPage/>}
 
         ],
     },  

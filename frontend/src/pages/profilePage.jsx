@@ -1,7 +1,9 @@
-export default function ProfilePage() {
+const ProfilePage = () => {
     return (
         <div>
-            <h1>profile</h1>
+            Profile
         </div>
     )
-}
+};
+
+export default ProfilePage

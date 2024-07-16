@@ -1,7 +1,9 @@
-export default function EventsPage() {
+const EventsPage = () => {
     return (
         <div>
-            <h1>events</h1>
+            Events
         </div>
     )
-}
+};
+
+export default EventsPage

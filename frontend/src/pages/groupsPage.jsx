@@ -1,7 +1,9 @@
-export default function GroupsPage() {
+const GroupsPage = () => {
     return (
         <div>
-            <h1>groups</h1>
+            Groups
         </div>
     )
-}
+};
+
+export default GroupsPage

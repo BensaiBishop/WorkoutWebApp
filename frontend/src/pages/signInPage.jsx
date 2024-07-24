@@ -17,6 +17,7 @@ const SigninPage = () => {
             const response = await axios.post('http://localhost:3000/signin', { username, password });
             const recievedToken = response.data.token;
             localStorage.setItem('token', recievedToken);
+            localStorage.setItem('username', username);
             setToken(recievedToken);
             setMessage('Login successful');
             navigate('/');

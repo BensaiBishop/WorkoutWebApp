@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
+
+
 const ProfilePage = () => {
+
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    },[]);
+
     return (
         <div>
-            Profile
+            {username}
         </div>
     )
 };

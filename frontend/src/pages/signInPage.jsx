@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from  "axios";
+import { useNavigate } from "react-router-dom";
 
 const SigninPage = () => {
 
@@ -6,17 +8,22 @@ const SigninPage = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [token, setToken] = useState('');
+    const navigate = useNavigate();
 
 
     const handleSignin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/signin', {username, password});
-            setToken(response.data.token);
-            localStorage.setItem('token', token);
+            const response = await axios.post('http://localhost:3000/signin', { username, password });
+            const recievedToken = response.data.token;
+            localStorage.setItem('token', recievedToken);
+            localStorage.setItem('username', username);
+            setToken(recievedToken);
             setMessage('Login successful');
+            navigate('/');
         } catch (error) {
-            setMessage(error.response.data.message)
+            console.error(error)
+            setMessage(error.response?.data?.message || 'Signin failed');
         }
     }
 
@@ -32,7 +39,7 @@ const SigninPage = () => {
                     </div>
                     <div className="password mb-6">
                         <label htmlFor="password" className="block text-sm leading-6">Password</label>
-                        <input type="text" id="password" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
+                        <input type="password" id="password" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
                         required value={password} onChange={(event) => setPassword(event.target.value)}/>
                     </div>
                     <button type="submit" className="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-zinc-900 text-white hover:bg-zinc-700 w-full">
@@ -43,8 +50,8 @@ const SigninPage = () => {
                     <a href="/password/reset" className="text-sm hover:underline">Forgot password?</a>
                 </p>
             </div>
-            {message && <p>{message}</p>}
-            {token && <p>Token:{token}</p>}
+            {message && <p> DEBUGGING {message}</p>}
+            {token && <p>DEBUGGING Token: {token}</p>}
             <footer className="relative shrink-0 text-white">
                 <div className="space-y-4 text-sm sm:flex sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
                     <p className="text-center sm:text-left">Don't have an account?</p>

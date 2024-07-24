@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     exerciseName: DataTypes.STRING,
     weight: DataTypes.FLOAT,
     reps: DataTypes.INTEGER,
-    sets: DataTypes.INTEGER
+    sets: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Exercise',

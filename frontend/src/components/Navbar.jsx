@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import {
   Disclosure,
   DisclosureButton,
@@ -23,6 +23,16 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+
+  const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setUsername(storedUsername);
+        }
+    },[]);
+
   return (
     <Disclosure as="nav" className=" bg-zinc-900">
       {({ open }) => (
@@ -66,6 +76,10 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
+              </div>
+              <div className=' text-2xl'>
+                {/* username */}
+                {username}
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}

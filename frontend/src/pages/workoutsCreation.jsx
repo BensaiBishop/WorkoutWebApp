@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import Card from '../components/Card';
+import axios from 'axios';
 
 const WorkoutsCreation = () => {
   
-  const [exercises, setExercises] = useState([{ name: 'Pushups', weight: "100", reps: '30', sets: '3'}]);
-  const [username, setUsername] = useState('');
+  const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: '100', reps: '30', sets: '3' }]);
+  const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
 
   const addExercise = () => {
-    setExercises([...exercises, { name: '', weight: '', reps: '', sets: ''}]);
+    setExercises([...exercises, { exerciseName: '', weight: '', reps: '', sets: '' }]);
   };
 
   const handleChange = (index, event) => {
-    const { name, value} = event.target;
+    const {name, value} = event.target;
     const updatedExercises = [...exercises];
-    updatedExercises[index][name] = name === 'name' ? value : parseFloat(value);
+    updatedExercises[index][name] = value;
     setExercises(updatedExercises);
   };
 
@@ -37,40 +38,39 @@ const WorkoutsCreation = () => {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('token'); 
-
     if (!token) {
       alert('User not authenticated, please login'); 
       return;
     }
-
     const data = {
       postDate : new Date(),
       username,
       exercises,
       token
     };
+
     try {
-      //dev url will redo when deploying to the web server.
-      const response = await fetch ('http://localhost:3000/workout',{
-        method: 'POST',
+      const response = await axios.post('http://localhost:3000/create', data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(data),
+        }
       });
 
-      if(!response.ok){
-        throw new Error ('Network response not ok')
-      }
-
-      const result = await response.json();
-      console.log('Workout submitted: ', result);
-      alert('Workout submitted successfully ')
+      console.log('Workout Submitted:', response.data);
+      alert('Workout Submitted Successfully');
 
     } catch (error) {
-      console.error('Error submitting workout',error);
-      alert('Failed to submit workout');
+      if (error.response) {
+        console.log('Error response:',error.response.status, error.response.data);
+        alert(`Failed to submit workout: ${error.response.data.message || 'Unknown error'}`);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+        alert('Failed to submit workout: No response received from server');
+      } else {
+        console.error('Error message:', error.message);
+        alert(`Failed to submit workout: ${error.message}`);
+      }
     }
   };
 

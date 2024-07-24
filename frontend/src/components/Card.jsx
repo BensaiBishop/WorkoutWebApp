@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import IncrementButtons from './IncrementButtons';
 import './card.css'
 
 const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, handleReset }) => {
@@ -11,10 +12,11 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
         type="text"
         name="exerciseName"
         placeholder="Exercise"
-        value={exercise.exerciseName}
+        value={exercise.exerciseName || ''}
         onChange={(event) => handleChange(index, event)}
         className="block border rounded mb-3 p-2"
       />
+
       <div>Weight(lb)</div>
       <input
         type='number'
@@ -24,23 +26,15 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
         onChange={(event) => handleChange(index, event)}
         className="block p-2 border rounded mb-2"
       />
-      <div className='flex-row space-x-4 py-2 '>
-        <button onClick={() => handleIncrement(index, 'weight', 1)} className='card-button'>
-          +1
-        </button>
-        <button onClick={() => handleIncrement(index, 'weight', 5)} className='card-button'>
-          +5
-        </button>
-        <button onClick={() => handleIncrement(index, 'weight', 10)} className='card-button'> 
-          +10
-        </button>
-        <button onClick={() => handleIncrement(index, 'weight', 100)} className='card-button'>
-          +100
-        </button>
-        <button onClick={() => handleReset(index, 'weight')} className='card-button'>
-          reset
-        </button>
+      <div>
+        <IncrementButtons 
+        index = {index}
+        field = "weight"
+        handleIncrement = {handleIncrement}
+        handleReset = {handleReset}>  
+        </IncrementButtons>
       </div>
+
       <div>Reps</div>
       <input
         type="number"
@@ -50,23 +44,15 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
         onChange={(event) => handleChange(index, event)}
         className="block p-2 border rounded mb-2"
       />
-      <div className='flex-row space-x-4 py-2'>
-        <button onClick={() => handleIncrement(index, 'reps', 1)} className='card-button'>
-          +1
-        </button>
-        <button onClick={() => handleIncrement(index, 'reps', 5)} className='card-button'>
-          +5
-        </button>
-        <button onClick={() => handleIncrement(index, 'reps', 10)} className='card-button'> 
-          +10
-        </button>
-        <button onClick={() => handleIncrement(index, 'reps', 100)} className='card-button'>
-          +100
-        </button>
-        <button onClick={() => handleReset(index, 'reps')} className='card-button'>
-          reset
-        </button>
+      <div>
+        <IncrementButtons 
+        index = {index}
+        field = "reps"
+        handleIncrement = {handleIncrement}
+        handleReset = {handleReset}>  
+        </IncrementButtons>
       </div>
+
       <div>Sets</div>
       <input
         type="number"
@@ -76,22 +62,13 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
         onChange={(event) => handleChange(index, event)}
         className="block p-2 border rounded mb-2"
       />
-      <div className='flex-row space-x-4 py-2'>
-        <button onClick={() => handleIncrement(index, 'sets', 1)} className='card-button'>
-          +1
-        </button>
-        <button onClick={() => handleIncrement(index, 'sets', 5)} className='card-button'>
-          +5
-        </button>
-        <button onClick={() => handleIncrement(index, 'sets', 10)} className='card-button'> 
-          +10
-        </button>
-        <button onClick={() => handleIncrement(index, 'sets', 100)} className='card-button'>
-          +100
-        </button>
-        <button onClick={() => handleReset(index, 'sets')} className='card-button'>
-          reset
-        </button>
+      <div>
+        <IncrementButtons 
+        index = {index}
+        field = "sets"
+        handleIncrement = {handleIncrement}
+        handleReset = {handleReset}>  
+        </IncrementButtons>
       </div>
       <button
         onClick={() => handleRemove(index)}

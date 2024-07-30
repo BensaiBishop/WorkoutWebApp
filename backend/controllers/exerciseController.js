@@ -33,7 +33,17 @@ async function createWorkout(req, res) {
     }
 }
 
+async function getWorkouts(req,res) {
+    try {
+        const workouts = await Exercise.findAll();
+        res.json(workouts);
+    } catch (error) {
+        res.status(500).json({error: "Failed to fetch wrokouts"});
+    }
+}
+
 module.exports = {
-    createWorkout
+    createWorkout,
+    getWorkouts,
 };
 

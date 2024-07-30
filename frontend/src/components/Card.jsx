@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import IncrementButtons from './IncrementButtons';
 import './card.css'
 
-const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, handleReset }) => {
+export default function Card ({ index, exercise, handleChange, handleRemove, handleIncrement, handleReset }) {
   return (
     <div className="p-4 mb-4 bg-zinc-700 rounded-lg shadow-md border border-zinc-100">
       <h3 className="font-semibold mb-2 text-xl">Exercise {index + 1}</h3>
@@ -80,4 +80,3 @@ const Card = ({ index, exercise, handleChange, handleRemove, handleIncrement, ha
   );
 };
 
-export default Card;

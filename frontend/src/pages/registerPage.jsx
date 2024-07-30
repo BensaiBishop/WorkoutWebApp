@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
+export default function RegisterPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -12,7 +12,7 @@ const RegisterPage = () => {
     const handleRegister = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/register', {username, password});
+            const response = await axios.post('http://localhost:3000/api/register', {username, password});
             console.log('Response received', response);
             setMessage(response.data.message); 
             navigate('/signin');
@@ -47,4 +47,3 @@ const RegisterPage = () => {
     )
 };
 
-export default RegisterPage

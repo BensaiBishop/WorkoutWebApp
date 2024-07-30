@@ -1,6 +1,7 @@
 
 
-const IncrementButtons = ({ index, field, handleIncrement, handleReset}) => {
+export default function IncrementButtons ({ index, field, handleIncrement, handleReset}) {
+
     const increments = [1,5,10,100,-1];
 
     return (
@@ -23,4 +24,3 @@ const IncrementButtons = ({ index, field, handleIncrement, handleReset}) => {
     );
 };
 
-export default IncrementButtons;

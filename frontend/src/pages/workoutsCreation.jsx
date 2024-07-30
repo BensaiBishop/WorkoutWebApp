@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Card from '../components/Card';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const WorkoutsCreation = () => {
+export default function WorkoutsCreation() {
   
   const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: '100', reps: '30', sets: '3' }]);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
-
+  const navigate = useNavigate();
 
   const addExercise = () => {
     setExercises([...exercises, { exerciseName: '', weight: '', reps: '', sets: '' }]);
@@ -50,15 +51,15 @@ const WorkoutsCreation = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/create', data, {
+      const response = await axios.post('http://localhost:3000/api/createWorkouts', data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });
-
       console.log('Workout Submitted:', response.data);
-      alert('Workout Submitted Successfully');
+      navigate('/');
+      window.location.reload();
 
     } catch (error) {
       if (error.response) {
@@ -103,4 +104,3 @@ const WorkoutsCreation = () => {
   );
 };
 
-export default WorkoutsCreation;

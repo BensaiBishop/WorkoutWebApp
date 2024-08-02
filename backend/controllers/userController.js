@@ -37,7 +37,24 @@ async function signinUser (req, res) {
     }
 }
 
+async function renewToken (req, res) {
+    const {token} = req.body;
+    if (!token) {
+        return res.status(400).json({message:'No token provided'});
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'letsgrindit');
+        const newToken = jwt.sign ({ id: decoded.id }, 'letsgrindit', { expiresIn: '1h'});
+
+        res.json({token: newToken});
+    } catch (error) {
+        res.status(401).json({message: 'invalid or expired token'});
+    }
+}
+
 module.exports = {
     registerUser,
     signinUser,
+    renewToken,
 };

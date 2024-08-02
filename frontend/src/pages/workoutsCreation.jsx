@@ -93,6 +93,7 @@ export default function WorkoutsCreation() {
           handleRemove={handleRemove}
           handleIncrement={handleIncrement}
           handleReset={handleReset}
+          addExercise={addExercise}
         />
       ))}
       </div>

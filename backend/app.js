@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Logging MiddleWare, didn't know I hade to add seperate middlware to log
+// Logging MiddleWare, didn't know I had to add seperate middlware to log
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
   console.log('Request Body:', req.body);

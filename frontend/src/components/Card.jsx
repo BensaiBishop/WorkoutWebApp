@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import IncrementButtons from './IncrementButtons';
 import './card.css'
 
-export default function Card ({ index, exercise, handleChange, handleRemove, handleIncrement, handleReset }) {
+export default function Card ({ index, exercise, handleChange, handleRemove, handleIncrement, handleReset, addExercise }) {
   return (
     <div className="p-4 mb-4 bg-zinc-700 rounded-lg shadow-md border border-zinc-100">
       <h3 className="font-semibold mb-2 text-xl">Exercise {index + 1}</h3>
@@ -17,7 +17,7 @@ export default function Card ({ index, exercise, handleChange, handleRemove, han
         className="block border rounded mb-3 p-2"
       />
 
-      <div>Weight(lb)</div>
+      <div>Weight (lb)</div>
       <input
         type='number'
         name='weight'
@@ -71,11 +71,18 @@ export default function Card ({ index, exercise, handleChange, handleRemove, han
         </IncrementButtons>
       </div>
       <button
+        onClick={() => addExercise()}
+        className="p-2 mt-4 mr-2 bg-green-700 text-white rounded hover:bg-green-900"
+      >
+        + Add Exercise
+      </button>
+      <button
         onClick={() => handleRemove(index)}
         className="p-2 mt-4 bg-red-700 text-white rounded hover:bg-red-900"
       >
         - Remove Exercise
       </button>
+      
     </div>
   );
 };

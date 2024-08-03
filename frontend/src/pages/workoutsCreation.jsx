@@ -16,7 +16,19 @@ export default function WorkoutsCreation() {
   const handleChange = (index, event) => {
     const {name, value} = event.target;
     const updatedExercises = [...exercises];
-    updatedExercises[index][name] = value;
+    let sanitizedValue = value;
+
+    if (name === "exerciseName") {
+      updatedExercises[index][name] = value.slice(0,21);
+    } else {
+      sanitizedValue = parseFloat(value);
+      if (isNaN(sanitizedValue) || sanitizedValue < 0) {
+        sanitizedValue = '';
+      }else if (sanitizedValue > 99999) {
+        sanitizedValue = 99999
+      }
+      updatedExercises[index][name] = sanitizedValue;
+    }
     setExercises(updatedExercises);
   };
 
@@ -33,7 +45,7 @@ export default function WorkoutsCreation() {
 
   const handleReset = (index,field) => {
     const updatedExercises = [...exercises];
-    updatedExercises[index][field] = 0;
+    updatedExercises[index][field] = null;
     setExercises(updatedExercises);
   }
 
@@ -43,6 +55,14 @@ export default function WorkoutsCreation() {
       alert('User not authenticated, please login'); 
       return;
     }
+
+    const sanitizedExercise = exercises.map(exercise => ({
+      exerciseName: exercise.exerciseName.slice(0,100),
+      weight: Math.max(0,parseFloat(exercise.weight) || 0),
+      reps: Math.max(0,parseFloat(exercise.reps) || 0),
+      sets: Math.max(0,parseFloat(exercise.reps) || 0),
+    }));
+
     const data = {
       postDate : new Date(),
       username,
@@ -83,7 +103,7 @@ export default function WorkoutsCreation() {
         + Add Exercise
       </button>
 
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap gap-2.5'>
       {exercises.map((exercise, index) => (
         <Card
           key={index}

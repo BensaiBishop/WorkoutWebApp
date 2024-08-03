@@ -63,26 +63,42 @@ export default function WorkoutFeed () {
                 <div key={date} className="date-group">
                     <div className="date-divider m-2 p-3 rounded bg-zinc-700">{date}</div>
                     {Object.keys(groupWorkoutsByDateAndUser[date]).sort().map((username) => (
-                       <div key={username} className="user-group">
-                            <h1 className="user-divider m-3 p-3 rounded uppercase bg-zinc-900">{username}</h1>
+                       <div key={username} className="user-group">      
+                            <h1 className="user-divider m-3 p-3 rounded uppercase bg-zinc-900 font-semibold">{username}</h1>
                             {groupWorkoutsByDateAndUser[date][username].map((workout, index) => (
-                                <div key={index} className='m-4 rounded grid grid-cols-5'>
+                                <div key={index} className='m-4 pt-0.5 rounded grid grid-cols-5 bg-zinc-900'>
                     
                                     <div className='h-1 w-4 mx-3 my-3 bg-yellow-500 rounded'></div>
 
-                                    <h2 className='hidden uppercase mx-2'>{workout.username}</h2>
-                                    <h3 className=" col-span-1 uppercase">{workout.exerciseName}</h3>
-                                    <p className=" col-span-1">Weight: {workout.weight} LB</p>
-                                    <p className=" col-span-1">Reps: {workout.reps}</p>
-                                    <p className=" col-span-1">Sets: {workout.sets}</p>
+                                    <h2 className=' hidden uppercase mx-2'>{workout.username}</h2>
 
+                                    <div>
+                                        <h3 className=" col-span-1 uppercase">{workout.exerciseName}</h3>
+                                    </div>
+                                    <div>
+                                        {workout.weight != null && workout.weight !== 0 && (
+                                            <p className=" col-span-1">Weight: {workout.weight} LB</p> 
+                                        )}
+                                    </div>
                                     
+                                    <div>
+                                        {workout.reps != null && workout.reps !== 0 && (
+                                            <p className=" col-span-1">Reps: {workout.reps}</p> 
+                                        )}
+                                    </div>
+                                    <div>
+                                        {workout.sets != null && workout.sets !== 0 && (
+                                            <p className=" col-span-1">Sets: {workout.sets}</p> 
+                                        )}
+                                    </div>
+
                                     <p className="hidden">ID: {workout.id}</p>
                                     <p className="mx-2 hidden">Date: {new Date(workout.postDate).toLocaleDateString()}</p>
                                 </div>
                             ))}
+                            <div className="h-1 mx-3 rounded bg-zinc-700"></div>
                        </div> 
-                    ))} 
+                    ))}                    
                 </div>
             ))}
         </InfiniteScroll> 

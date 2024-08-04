@@ -1,9 +1,9 @@
 const { Exercise, User } = require('../models');
 const jwt = require('jsonwebtoken');
 
+//the function called with submitting the workout
 async function createWorkout(req, res) {
     const {token, exercises } = req.body;
-
     try {
         const decodedToken = jwt.verify(token, 'letsgrindit');
         const user = await User.findByPk(decodedToken.id);
@@ -16,8 +16,31 @@ async function createWorkout(req, res) {
             return res.status(400).json({message: 'Invalid exercise format.'});
         }
 
+        //helper function to validate inputted user data
+        function validateExercise(exercise) {
+            let errors = [];
+
+            if (typeof exercise.exerciseName !== 'string' || exercise.exerciseName.length > 21) {
+                errors.push('Invalid exercise name')
+            }
+            if (typeof exercise.weight !== 'number' || exercise.weight < 1 || exercise.weight > 99999) {
+                errors.push('Invalid exercise weight. Must be float between 1 and 99999')
+            } else {
+                exercise.weight = Math.round(exercise.weight * 100) / 100;
+            }
+            return errors;
+        }
+
         for (const exercise of exercises) {
-            const newExercise = await Exercise.create({ 
+            console.log('Validating exercise:', exercise);
+            const errors = validateExercise(exercise);
+
+            if (errors.length !== 0) {
+                console.log('Validation errors:', errors);
+                return res.status(400).json({ message: 'Invalid exercise data', errors });
+            }
+
+            await Exercise.create({ 
                 ...exercise, 
                 userId: user.id,
                 username: user.username,

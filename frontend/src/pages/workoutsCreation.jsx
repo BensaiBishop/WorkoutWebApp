@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function WorkoutsCreation() {
   
-  const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: '100', reps: '30', sets: '3' }]);
+  const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: 100, reps: 30, sets: 3 }]);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
   const navigate = useNavigate();
 

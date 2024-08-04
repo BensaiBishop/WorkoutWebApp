@@ -51,57 +51,60 @@ export default function WorkoutFeed () {
     const sortedDates = Object.keys(groupWorkoutsByDateAndUser).sort((a,b) => new Date(b) - new Date(a));
 
     return (
-        <div className="overflow-auto">
-        <InfiniteScroll
-            dataLength={workouts.length}
-            next={fetchWorkouts}
-            hasMore={hasMore}
-            loader={<h1 className="px-5 opacity-5">Loading...</h1>}
-            className="workout-feed"
-        >
-            {sortedDates.map((date) => (
-                <div key={date} className="date-group">
-                    <div className="date-divider m-2 p-3 rounded bg-zinc-700">{date}</div>
-                    {Object.keys(groupWorkoutsByDateAndUser[date]).sort().map((username) => (
-                       <div key={username} className="user-group">      
-                            <h1 className="user-divider m-3 p-3 rounded uppercase bg-zinc-900 font-semibold">{username}</h1>
-                            {groupWorkoutsByDateAndUser[date][username].map((workout, index) => (
-                                <div key={index} className='m-4 pt-0.5 rounded grid grid-cols-5 bg-zinc-900'>
-                    
-                                    <div className='h-1 w-4 mx-3 my-3 bg-yellow-500 rounded'></div>
+        <div className="root flex">
+            <div className="w-1 ml-auto bg-zinc-500"></div>
+            <div className="overflow-auto">
+                <InfiniteScroll
+                    dataLength={workouts.length}
+                    next={fetchWorkouts}
+                    hasMore={hasMore}
+                    loader={<h1 className="px-5 opacity-5">Loading...</h1>}
+                    className="workout-feed"
+                >
+                    {sortedDates.map((date) => (
+                        <div key={date} className="date-group">
+                            <div className="date-divider m-2 p-3 rounded bg-zinc-700">{date}</div>
+                            {Object.keys(groupWorkoutsByDateAndUser[date]).sort().map((username) => (
+                            <div key={username} className="user-group">      
+                                    <h1 className="user-divider mx-3 mt-3 p-3 rounded uppercase bg-slate-500 font-bold">{username}</h1>
+                                    {groupWorkoutsByDateAndUser[date][username].map((workout, index) => (
+                                        <div key={index} className=' mx-4 my-1 rounded pt-0.5 grid grid-cols-5 bg-zinc-900'>
+                            
+                                        <div className='h-1 w-4 ml-3 my-3 bg-yellow-500 rounded'></div>
 
-                                    <h2 className=' hidden uppercase mx-2'>{workout.username}</h2>
+                                            <h2 className=' hidden uppercase mx-2'>{workout.username}</h2>
+                                            
+                                            <div>
+                                                <h3 className=" col-span-1 uppercase mr-3 overflow-hidden">{workout.exerciseName}</h3>
+                                            </div>
+                                            <div>
+                                                {workout.weight != null && workout.weight !== 0 && (
+                                                    <p className=" col-span-1 overflow-hidden">Wt: {workout.weight} LB</p> 
+                                                )}
+                                            </div>
+                                            
+                                            <div>
+                                                {workout.reps != null && workout.reps !== 0 && (
+                                                    <p className=" col-span-1">Reps: {workout.reps}</p> 
+                                                )}
+                                            </div>
+                                            <div>
+                                                {workout.sets != null && workout.sets !== 0 && (
+                                                    <p className=" col-span-1">Sets: {workout.sets}</p> 
+                                                )}
+                                            </div>
 
-                                    <div>
-                                        <h3 className=" col-span-1 uppercase">{workout.exerciseName}</h3>
-                                    </div>
-                                    <div>
-                                        {workout.weight != null && workout.weight !== 0 && (
-                                            <p className=" col-span-1">Weight: {workout.weight} LB</p> 
-                                        )}
-                                    </div>
-                                    
-                                    <div>
-                                        {workout.reps != null && workout.reps !== 0 && (
-                                            <p className=" col-span-1">Reps: {workout.reps}</p> 
-                                        )}
-                                    </div>
-                                    <div>
-                                        {workout.sets != null && workout.sets !== 0 && (
-                                            <p className=" col-span-1">Sets: {workout.sets}</p> 
-                                        )}
-                                    </div>
-
-                                    <p className="hidden">ID: {workout.id}</p>
-                                    <p className="mx-2 hidden">Date: {new Date(workout.postDate).toLocaleDateString()}</p>
-                                </div>
-                            ))}
-                            <div className="h-1 mx-3 rounded bg-zinc-700"></div>
-                       </div> 
-                    ))}                    
-                </div>
-            ))}
-        </InfiniteScroll> 
+                                            <p className="hidden">ID: {workout.id}</p>
+                                            <p className="mx-2 hidden">Date: {new Date(workout.postDate).toLocaleDateString()}</p>
+                                        </div>
+                                    ))}
+                                    <div className="h-1 mx-3 mt-1.5 rounded bg-zinc-700"></div>
+                            </div> 
+                            ))}                    
+                        </div>
+                    ))}
+                </InfiniteScroll> 
+            </div>
         </div>
     );
 }

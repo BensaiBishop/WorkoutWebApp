@@ -40,7 +40,7 @@ export default function TokenExpirationHandler() {
                 if (currentTime >= expirationTime) {
                     handleLogout();
                 } else if (expirationTime - currentTime < 5*60*1000) {
-                    const userResponse = window.alert('Your session is about to expire, please renew');
+                    const userResponse = window.confirm('Your session is about to expire, please renew');
                     if (userResponse) {
                         handleRenewSession();
                     } else {

@@ -1,24 +1,53 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import debounce from "../functions/debounce";
 
-const RegisterPage = () => {
+
+export default function RegisterPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const [userNameAvailable, setUserNameAvailable ] = useState(null);
+
+
+    const checkUserNameAvailability = useCallback(
+        debounce(async (username) => {
+            try {
+                const response = await axios.post('http://localhost:3000/api/checkuserName', {username});
+                setUserNameAvailable(!response.data.exists);
+            } catch (error) {
+                console.log('Error checking username availibility', error)
+            }
+        },300),[]
+    );
+    useEffect(() => {
+        if (username) {
+            checkUserNameAvailability(username);
+        }
+    }, [username, checkUserNameAvailability]);
 
     const handleRegister = async (event) => {
         event.preventDefault();
+
+        if (!userNameAvailable) {
+            setMessage('Username is already taken');
+            return;
+        }
         try {
-            const response = await axios.post('http://localhost:3000/register', {username, password});
+            const response = await axios.post('http://localhost:3000/api/register', {username, password});
             console.log('Response received', response);
             setMessage(response.data.message); 
             navigate('/signin');
         } catch (error) {
-            console.log('Response received', error.response);
-            setMessage(error.response.data.message)
+            console.log('Error received', error.response);
+            if (error.response && error.response.data && error.response.data.error) {
+                setMessage(error.response.data.error);
+            } else {
+                setMessage('An error occurred. Please try again.');
+            }
         }
     }
 
@@ -31,6 +60,15 @@ const RegisterPage = () => {
                         <label htmlFor="username" className="block text-sm leading-6">Username</label>
                         <input type="text" id="username" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
                         required value={username} onChange={(event) => setUsername(event.target.value)}/>
+                        
+
+                        {username && (
+                            <p className={`mt-2 text-sm ${usernameAvailable ? 'text-green-500' : 'text-red-500'}`}>
+                                {usernameAvailable ? 'Username is available' : 'Username is already taken'}
+                            </p>
+                        )}
+
+
                     </div>
                     <div className="password mb-6">
                         <label htmlFor="password" className="block text-sm leading-6">Password</label>
@@ -47,4 +85,3 @@ const RegisterPage = () => {
     )
 };
 
-export default RegisterPage

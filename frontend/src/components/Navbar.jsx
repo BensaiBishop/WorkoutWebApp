@@ -33,6 +33,11 @@ export default function Navbar() {
         }
     },[]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+  }
+
   return (
     <Disclosure as="nav" className=" bg-zinc-900">
       {({ open }) => (
@@ -131,6 +136,17 @@ export default function Navbar() {
                             className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign In
+                          </a>
+                        )}
+                      </MenuItem>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <a
+                            onClick={handleLogout}
+                            href="/signin"
+                            className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                          >
+                            Sign out
                           </a>
                         )}
                       </MenuItem>

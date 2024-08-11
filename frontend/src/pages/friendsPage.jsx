@@ -1,4 +1,4 @@
-const FriendsPage = () => {
+export default function FriendsPage () {
     return (
         <div>
             Friends
@@ -6,4 +6,3 @@ const FriendsPage = () => {
     )
 };
 
-export default FriendsPage

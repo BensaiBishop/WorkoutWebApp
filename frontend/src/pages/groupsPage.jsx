@@ -1,4 +1,4 @@
-const GroupsPage = () => {
+export default function GroupsPage() {
     return (
         <div>
             Groups
@@ -6,4 +6,3 @@ const GroupsPage = () => {
     )
 };
 
-export default GroupsPage

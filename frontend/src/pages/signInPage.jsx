@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from  "axios";
 import { useNavigate } from "react-router-dom";
 
-const SigninPage = () => {
+export default function SigninPage() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -14,13 +14,14 @@ const SigninPage = () => {
     const handleSignin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/signin', { username, password });
+            const response = await axios.post('http://localhost:3000/api/signin', { username, password });
             const recievedToken = response.data.token;
             localStorage.setItem('token', recievedToken);
             localStorage.setItem('username', username);
             setToken(recievedToken);
             setMessage('Login successful');
             navigate('/');
+            window.location.reload();
         } catch (error) {
             console.error(error)
             setMessage(error.response?.data?.message || 'Signin failed');
@@ -47,7 +48,7 @@ const SigninPage = () => {
                     </button>
                 </form>
                 <p className="mt-8 text-center">
-                    <a href="/password/reset" className="text-sm hover:underline">Forgot password?</a>
+                    <a href="/password/reset" className="text-sm hover:underline hidden">Forgot password?</a>
                 </p>
             </div>
             {message && <p> DEBUGGING {message}</p>}
@@ -64,4 +65,3 @@ const SigninPage = () => {
     )
 };
 
-export default SigninPage

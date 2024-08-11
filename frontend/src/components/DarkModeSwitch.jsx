@@ -3,7 +3,7 @@ import {
     Switch,
   } from '@headlessui/react'
 
-function DarkModeSwitch() {
+export default function DarkModeSwitch() {
   const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
@@ -32,5 +32,5 @@ function DarkModeSwitch() {
   )
 }
 
-export default DarkModeSwitch
+
 

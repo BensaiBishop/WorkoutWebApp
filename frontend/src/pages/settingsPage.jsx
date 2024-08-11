@@ -1,4 +1,4 @@
-const SettingsPage = () => {
+export default function SettingsPage() {
     return (
         <div>
             Settings
@@ -6,4 +6,3 @@ const SettingsPage = () => {
     )
 };
 
-export default SettingsPage

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Card from '../components/Card';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const WorkoutsCreation = () => {
+export default function WorkoutsCreation() {
   
-  const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: '100', reps: '30', sets: '3' }]);
+  const [exercises, setExercises] = useState([{ exerciseName: 'Pushups', weight: 100, reps: 30, sets: 3 }]);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
-
+  const navigate = useNavigate();
 
   const addExercise = () => {
     setExercises([...exercises, { exerciseName: '', weight: '', reps: '', sets: '' }]);
@@ -15,7 +16,19 @@ const WorkoutsCreation = () => {
   const handleChange = (index, event) => {
     const {name, value} = event.target;
     const updatedExercises = [...exercises];
-    updatedExercises[index][name] = value;
+    let sanitizedValue = value;
+
+    if (name === "exerciseName") {
+      updatedExercises[index][name] = value.slice(0,21);
+    } else {
+      sanitizedValue = parseFloat(value);
+      if (isNaN(sanitizedValue) || sanitizedValue < 0) {
+        sanitizedValue = '';
+      }else if (sanitizedValue > 99999) {
+        sanitizedValue = 99999
+      }
+      updatedExercises[index][name] = sanitizedValue;
+    }
     setExercises(updatedExercises);
   };
 
@@ -32,7 +45,7 @@ const WorkoutsCreation = () => {
 
   const handleReset = (index,field) => {
     const updatedExercises = [...exercises];
-    updatedExercises[index][field] = 0;
+    updatedExercises[index][field] = null;
     setExercises(updatedExercises);
   }
 
@@ -42,6 +55,14 @@ const WorkoutsCreation = () => {
       alert('User not authenticated, please login'); 
       return;
     }
+
+    const sanitizedExercise = exercises.map(exercise => ({
+      exerciseName: exercise.exerciseName.slice(0,100),
+      weight: Math.max(0,parseFloat(exercise.weight) || 0),
+      reps: Math.max(0,parseFloat(exercise.reps) || 0),
+      sets: Math.max(0,parseFloat(exercise.reps) || 0),
+    }));
+
     const data = {
       postDate : new Date(),
       username,
@@ -50,15 +71,15 @@ const WorkoutsCreation = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/create', data, {
+      const response = await axios.post('http://localhost:3000/api/createWorkouts', data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });
-
       console.log('Workout Submitted:', response.data);
-      alert('Workout Submitted Successfully');
+      navigate('/');
+      window.location.reload();
 
     } catch (error) {
       if (error.response) {
@@ -82,7 +103,7 @@ const WorkoutsCreation = () => {
         + Add Exercise
       </button>
 
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap gap-2.5'>
       {exercises.map((exercise, index) => (
         <Card
           key={index}
@@ -92,6 +113,7 @@ const WorkoutsCreation = () => {
           handleRemove={handleRemove}
           handleIncrement={handleIncrement}
           handleReset={handleReset}
+          addExercise={addExercise}
         />
       ))}
       </div>
@@ -103,4 +125,3 @@ const WorkoutsCreation = () => {
   );
 };
 
-export default WorkoutsCreation;

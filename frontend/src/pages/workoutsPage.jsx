@@ -1,6 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WorkoutFeed from '../components/WorkoutFeed';
 
 export default function WorkoutsPage() {
@@ -10,6 +9,8 @@ export default function WorkoutsPage() {
     navigate('/creation');
   }
 
+  const userName = localStorage.getItem('username')
+  
   return (
     <div className="flex-col justify-items-start">
       <div className='flex'>
@@ -23,7 +24,7 @@ export default function WorkoutsPage() {
       </div>
       <div className='h-1 bg-zinc-500'></div>
       <div className='workout-scroll-container' style={{height:'700px', overflow:'auto'}}>
-        <WorkoutFeed/>
+        <WorkoutFeed currentUsername={userName}/>
       </div>
     </div>
   );

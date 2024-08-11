@@ -14,6 +14,7 @@ export default function TokenExpirationHandler() {
 
         const handleLogout = () => {
             localStorage.removeItem('token');
+            localStorage.removeItem('username');
             setToken(null);
             navigate('/signin');
         };

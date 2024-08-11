@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-export default function WorkoutFeed () {
+export default function WorkoutFeed ({currentUsername}) {
 
     const [workouts, setWorkouts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
@@ -68,33 +68,48 @@ export default function WorkoutFeed () {
                             <div key={username} className="user-group">      
                                     <h1 className="user-divider mx-3 mt-3 p-3 rounded uppercase bg-slate-500 font-bold">{username}</h1>
                                     {groupWorkoutsByDateAndUser[date][username].map((workout, index) => (
-                                        <div key={index} className=' mx-4 my-1 rounded pt-0.5 grid grid-cols-5 bg-zinc-900'>
+                                        <div key={index} className=' mx-4 my-1 rounded pt-0.5 grid grid-cols-6 bg-zinc-900 overflow-hidden'>
                             
-                                        <div className='h-1 w-4 ml-3 my-3 bg-yellow-500 rounded'></div>
+                                            <div className='h-1 w-4 ml-3 my-3 bg-yellow-500 rounded'></div>
+                                            
+                                            <div className=" col-span-1 overflow-hidden mr-5">
+                                                <h3 className="uppercase">{workout.exerciseName}</h3>
+                                            </div>
 
-                                            <h2 className=' hidden uppercase mx-2'>{workout.username}</h2>
-                                            
-                                            <div>
-                                                <h3 className=" col-span-1 uppercase mr-3 overflow-hidden">{workout.exerciseName}</h3>
-                                            </div>
-                                            <div>
+                                            <div className=" col-span-1 overflow-hidden mr-5">
                                                 {workout.weight != null && workout.weight !== 0 && (
-                                                    <p className=" col-span-1 overflow-hidden">Wt: {workout.weight} LB</p> 
+                                                    <p>Wt: {workout.weight} LB</p> 
                                                 )}
                                             </div>
                                             
-                                            <div>
+                                            <div className=" col-span-1 overflow-hidden mr-5">
                                                 {workout.reps != null && workout.reps !== 0 && (
-                                                    <p className=" col-span-1">Reps: {workout.reps}</p> 
+                                                    <p>Reps: {workout.reps}</p> 
                                                 )}
                                             </div>
-                                            <div>
+                                            <div className=" col-span-1 overflow-hidden mr-5">
                                                 {workout.sets != null && workout.sets !== 0 && (
-                                                    <p className=" col-span-1">Sets: {workout.sets}</p> 
+                                                    <p>Sets: {workout.sets}</p> 
                                                 )}
                                             </div>
 
                                             <p className="hidden">ID: {workout.id}</p>
+
+                                            {workout.username === currentUsername && (
+                                                <div className="flex col-span-1 overflow-hidden">
+                                                    <div className="px-4 mx-2 rounded opacity-15  hover:opacity-100">
+                                                        <button className="">
+                                                            Edit
+                                                        </button>
+                                                    </div>
+                                                    <div className="px-4 mx-2 rounded opacity-15 hover:opacity-100">
+                                                        <button className="">
+                                                            Del
+                                                        </button>
+                                                    </div> 
+                                                </div>   
+                                            )}     
+                                                                                         
                                             <p className="mx-2 hidden">Date: {new Date(workout.postDate).toLocaleDateString()}</p>
                                         </div>
                                     ))}

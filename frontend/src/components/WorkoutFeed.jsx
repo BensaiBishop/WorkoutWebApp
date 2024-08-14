@@ -36,6 +36,19 @@ export default function WorkoutFeed ({currentUsername}) {
         }
     };
 
+    const handleDelete = async (workoutId) => {
+        const token = localStorage.getItem('token');
+
+        try {
+            await axios.delete('http://localhost:3000/api/workouts',{
+                data: {token, exerciseId:workoutId}
+            });
+            window.location.reload();
+        } catch (error) {
+            console.error('Error deleting workout:', error);
+        }
+    }
+
     //gather workouts by date & user to assemble under corresponding date & user
     const groupWorkoutsByDateAndUser = workouts.reduce((acc, workout) => {
         if(!acc[workout.postDate]) {
@@ -103,7 +116,7 @@ export default function WorkoutFeed ({currentUsername}) {
                                                         </button>
                                                     </div>
                                                     <div className="px-4 mx-2 rounded opacity-15 hover:opacity-100">
-                                                        <button className="">
+                                                        <button onClick={() => handleDelete(workout.id)} className="">
                                                             Del
                                                         </button>
                                                     </div> 

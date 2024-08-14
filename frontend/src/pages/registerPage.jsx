@@ -12,20 +12,23 @@ export default function RegisterPage() {
     const navigate = useNavigate();
     const [userNameAvailable, setUserNameAvailable ] = useState(null);
 
-
     const checkUserNameAvailability = useCallback(
         debounce(async (username) => {
             try {
                 const response = await axios.post('http://localhost:3000/api/checkuserName', {username});
-                setUserNameAvailable(!response.data.exists);
+                setUserNameAvailable(response.data.exists ? false : true);
             } catch (error) {
-                console.log('Error checking username availibility', error)
+                console.log('Error checking username availability', error);
+                setUserNameAvailable(null); // Optionally, set to null to indicate an unknown state
             }
-        },300),[]
+        }, 300), []
     );
+
     useEffect(() => {
         if (username) {
             checkUserNameAvailability(username);
+        } else {
+            setUserNameAvailable(null);
         }
     }, [username, checkUserNameAvailability]);
 
@@ -63,8 +66,8 @@ export default function RegisterPage() {
                         
 
                         {username && (
-                            <p className={`mt-2 text-sm ${usernameAvailable ? 'text-green-500' : 'text-red-500'}`}>
-                                {usernameAvailable ? 'Username is available' : 'Username is already taken'}
+                            <p className={`mt-2 text-sm ${userNameAvailable === null ? 'text-gray-500' : userNameAvailable ? 'text-green-500' : 'text-red-500'}`}>
+                                {userNameAvailable === null ? 'Checking username availability...' : userNameAvailable ? 'Username is available' : 'Username is already taken'}
                             </p>
                         )}
 

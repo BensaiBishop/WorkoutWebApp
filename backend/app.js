@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/database');
@@ -11,7 +13,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Logging MiddleWare, didn't know I had to add seperate middlware to log
+// Logging MiddleWare
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
   console.log('Request Body:', req.body);
@@ -29,9 +31,17 @@ app.listen(port, () => {
     
     `);
   db.sequelize.sync().then(() => {
-    console.log('Database Synced');
+    console.log(`
+      
+      Database Synced
+      
+      `);
   }).catch(error => {
-    console.error('Database sync failed:', error);
+    console.error(`
+      
+      Database sync failed:
+      
+      `, error);
   });
 });
 

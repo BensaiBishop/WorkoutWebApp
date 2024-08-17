@@ -1,2 +1,2 @@
 # WorkoutWebApp
- Front and Backend
+A workout sharing application utilizing Node, React, and Vite.

@@ -108,13 +108,21 @@ async function editWorkouts(req,res) {
             return res.status(404).json({message: 'Exercise not found in database'});
         }
 
-        const errors = validateExercise(updates);
+        //convert string input to numbers if valid or null if otherwise.
+        const sanitizedUpdates = {
+            ...updates,
+            weight: updates.weight ? Number(updates.weight) : null,
+            reps: updates.reps ? Number(updates.reps) : null,
+            sets: updates.sets ? Number(updates.sets) : null,
+          };
+
+        const errors = validateExercise(sanitizedUpdates);
 
         if (errors.length !== 0) {
             return res.status(400).json({message:'Invalid exercise data', errors});
         }
 
-        await exercise.updates(updates);
+        await exercise.update(sanitizedUpdates);
         res.json({message:'Exercise updated successfully'});
         
     } catch (error) {

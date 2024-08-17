@@ -5,8 +5,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { where } = require('sequelize');
 
-
-
 async function registerUser (req, res) {
     const { username, password } = req.body;
     console.log('Incoming request: POST /api/register');
@@ -53,7 +51,7 @@ async function signinUser (req, res) {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {expiresIn: '1h' });
         res.json({ token });
     } catch(error) {
-        res.status(500).json({message: 'Server Error'});
+        res.status(500).json({message: '500 Server Error'});
     }
 }
 

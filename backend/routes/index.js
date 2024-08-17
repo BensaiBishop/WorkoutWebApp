@@ -5,9 +5,12 @@ const { createWorkout, getWorkouts, editWorkouts, deleteWorkouts } = require('..
 
 router.post('/register', registerUser);
 router.post('/signin', signinUser);
+router.post('/checkUserName', checkUserName);
+router.post('/renewToken', renewToken)
+
 router.post('/createWorkouts', createWorkout);
 router.get('/workouts', getWorkouts);
-router.post('/renewToken', renewToken)
-router.post('/checkuserName', checkUserName);
+router.delete('/workouts', deleteWorkouts);
+router.put('/workouts', editWorkouts);
 
 module.exports = router;

@@ -15,10 +15,10 @@ export default function SigninPage() {
         event.preventDefault();
         try {
             const response = await axios.post('http://localhost:3000/api/signin', { username, password });
-            const recievedToken = response.data.token;
-            localStorage.setItem('token', recievedToken);
+            const receivedToken = response.data.token;
+            localStorage.setItem('token', receivedToken);
             localStorage.setItem('username', username);
-            setToken(recievedToken);
+            setToken(receivedToken);
             setMessage('Login successful');
             navigate('/');
             window.location.reload();

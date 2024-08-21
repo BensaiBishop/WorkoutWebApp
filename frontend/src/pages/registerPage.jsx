@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import debounce from "../functions/debounce";
+import debounce from "../utils/debounce";
 
 
 export default function RegisterPage() {

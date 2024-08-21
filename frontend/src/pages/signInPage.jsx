@@ -48,7 +48,7 @@ export default function SigninPage() {
                     </button>
                 </form>
                 <p className="mt-8 text-center">
-                    <a href="/password/reset" className="text-sm hover:underline hidden">Forgot password?</a>
+                    <a href="/password/reset" className="text-sm hover:underline">Forgot password?</a>
                 </p>
             </div>
             {message && <p> DEBUGGING {message}</p>}

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { sanitizeInputs } from "../utils/santizeExerciseInputs";
 
 export default function WorkoutFeed ({currentUsername}) {
 
@@ -33,6 +34,7 @@ export default function WorkoutFeed ({currentUsername}) {
     }
 
     const openEditModal = (workout) => {
+        console.log('Editing workout:', workout);
         setEditWorkoutId(workout.id);
         setEditFormData({
           exerciseName: workout.exerciseName,
@@ -77,13 +79,13 @@ export default function WorkoutFeed ({currentUsername}) {
         });
     }; 
 
-    const handleEditSubmit = async (event, workoutId) => {
+    const handleEditSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
         try {
             await axios.put('http://localhost:3000/api/workouts', {
                 token,
-                exerciseId: workoutId,
+                exerciseId: editingWorkoutId,
                 updates: editFormData,
             });      
             setIsEditModalOpen(false);
@@ -204,28 +206,28 @@ export default function WorkoutFeed ({currentUsername}) {
                         <input
                             type="text"
                             value={editFormData.exerciseName}
-                            onChange={(e) => setEditFormData({ ...editFormData, exerciseName: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, exerciseName: sanitizeInputs('exerciseName', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Exercise Name"
                         />
                         <input
                             type="number"
                             value={editFormData.weight}
-                            onChange={(e) => setEditFormData({ ...editFormData, weight: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, weight: sanitizeInputs('weight', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Weight"
                         />
                         <input
                             type="number"
                             value={editFormData.reps}
-                            onChange={(e) => setEditFormData({ ...editFormData, reps: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, reps: sanitizeInputs('reps', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Reps"
                         />
                         <input
                             type="number"
                             value={editFormData.sets}
-                            onChange={(e) => setEditFormData({ ...editFormData, sets: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, sets: sanitizeInputs('sets', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Sets"
                         />

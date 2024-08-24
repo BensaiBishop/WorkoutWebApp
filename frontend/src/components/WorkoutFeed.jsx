@@ -68,17 +68,6 @@ export default function WorkoutFeed ({currentUsername}) {
         }
     };
 
-    const handleEditOnClick = (workout) => {
-        console.log('Editing workout:', workout);
-        setEditWorkoutId(workout.id);
-        setEditFormData({
-            exerciseName: workout.exerciseName,
-            weight: workout.weight || '',
-            reps: workout.reps || '',
-            sets: workout.sets || '',
-        });
-    }; 
-
     const handleEditSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
@@ -96,14 +85,13 @@ export default function WorkoutFeed ({currentUsername}) {
         }
     };
 
-    const handleDelete = async (workoutId) => {
-        const confirmed = window.confirm("Are you sure you want to delete this workout?");
-        if (!confirmed) return;
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        console.log('Deleting workout with ID:', selectedWorkout);
         const token = localStorage.getItem('token');
-
         try {
             await axios.delete('http://localhost:3000/api/workouts',{
-                data: {token, exerciseId:workoutId}
+                data: {token, exerciseId:selectedWorkout}
             });
             setIsDeleteModalOpen(false);
             window.location.reload();

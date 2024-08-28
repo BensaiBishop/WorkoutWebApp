@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react'
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { sanitizeInputs } from "../utils/santizeExerciseInputs";
 
 export default function WorkoutFeed ({currentUsername}) {
 
@@ -33,6 +34,7 @@ export default function WorkoutFeed ({currentUsername}) {
     }
 
     const openEditModal = (workout) => {
+        console.log('Editing workout:', workout);
         setEditWorkoutId(workout.id);
         setEditFormData({
           exerciseName: workout.exerciseName,
@@ -44,6 +46,8 @@ export default function WorkoutFeed ({currentUsername}) {
       };
 
     const fetchWorkouts = async () => {
+        if (!hasMore) return;
+
         try {
             const response = await axios.get(`http://localhost:3000/api/workouts?page=${page}&limit=${itemsPerPage}`);
             const fetchWorkouts = response.data.map(workout => ({
@@ -53,37 +57,27 @@ export default function WorkoutFeed ({currentUsername}) {
 
             //combine workouts by id to avoid displaying duplicates
             const uniqueWorkouts = [...new Set([...workouts, ...fetchWorkouts].map(workout => workout.id))]
-            .map(id => [...workouts, ...fetchWorkouts].find(workout => workout.id === id));
+                .map(id => [...workouts, ...fetchWorkouts].find(workout => workout.id === id));
+
             setWorkouts(uniqueWorkouts);
 
-            //setWorkouts((prevWorkouts) => [...prevWorkouts, ...response.data]);
             if(response.data.length < itemsPerPage) {
                 setHasMore(false);
             }
             setPage((prevPage) => prevPage + 1);
+
         } catch (error) {
             console.error('Error fetching workouts:', error);
         }
     };
 
-    const handleEditOnClick = (workout) => {
-        console.log('Editing workout:', workout);
-        setEditWorkoutId(workout.id);
-        setEditFormData({
-            exerciseName: workout.exerciseName,
-            weight: workout.weight || '',
-            reps: workout.reps || '',
-            sets: workout.sets || '',
-        });
-    }; 
-
-    const handleEditSubmit = async (event, workoutId) => {
+    const handleEditSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
         try {
             await axios.put('http://localhost:3000/api/workouts', {
                 token,
-                exerciseId: workoutId,
+                exerciseId: editingWorkoutId,
                 updates: editFormData,
             });      
             setIsEditModalOpen(false);
@@ -94,14 +88,13 @@ export default function WorkoutFeed ({currentUsername}) {
         }
     };
 
-    const handleDelete = async (workoutId) => {
-        const confirmed = window.confirm("Are you sure you want to delete this workout?");
-        if (!confirmed) return;
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        console.log('Deleting workout with ID:', selectedWorkout);
         const token = localStorage.getItem('token');
-
         try {
             await axios.delete('http://localhost:3000/api/workouts',{
-                data: {token, exerciseId:workoutId}
+                data: {token, exerciseId:selectedWorkout}
             });
             setIsDeleteModalOpen(false);
             window.location.reload();
@@ -130,7 +123,11 @@ export default function WorkoutFeed ({currentUsername}) {
             <div className="overflow-auto">
                 <InfiniteScroll
                     dataLength={workouts.length}
-                    next={fetchWorkouts}
+                    next={() => {
+                        if (hasMore) {
+                            fetchWorkouts();
+                        }
+                    }}
                     hasMore={hasMore}
                     loader={<h1 className="px-5 opacity-5">Loading...</h1>}
                     className="workout-feed"
@@ -204,28 +201,28 @@ export default function WorkoutFeed ({currentUsername}) {
                         <input
                             type="text"
                             value={editFormData.exerciseName}
-                            onChange={(e) => setEditFormData({ ...editFormData, exerciseName: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, exerciseName: sanitizeInputs('exerciseName', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Exercise Name"
                         />
                         <input
                             type="number"
                             value={editFormData.weight}
-                            onChange={(e) => setEditFormData({ ...editFormData, weight: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, weight: sanitizeInputs('weight', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Weight"
                         />
                         <input
                             type="number"
                             value={editFormData.reps}
-                            onChange={(e) => setEditFormData({ ...editFormData, reps: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, reps: sanitizeInputs('reps', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Reps"
                         />
                         <input
                             type="number"
                             value={editFormData.sets}
-                            onChange={(e) => setEditFormData({ ...editFormData, sets: e.target.value })}
+                            onChange={(e) => setEditFormData({ ...editFormData, sets: sanitizeInputs('sets', e.target.value) })}
                             className="w-full px-4 py-2 border rounded"
                             placeholder="Sets"
                         />

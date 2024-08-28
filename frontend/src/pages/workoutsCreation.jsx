@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Card from '../components/Card';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { sanitizeInputs } from '../utils/santizeExerciseInputs';
 
 export default function WorkoutsCreation() {
   
@@ -16,19 +17,9 @@ export default function WorkoutsCreation() {
   const handleChange = (index, event) => {
     const {name, value} = event.target;
     const updatedExercises = [...exercises];
-    let sanitizedValue = value;
+    
+    updatedExercises[index][name] = sanitizeInputs(name, value);
 
-    if (name === "exerciseName") {
-      updatedExercises[index][name] = value.slice(0,21);
-    } else {
-      sanitizedValue = parseFloat(value);
-      if (isNaN(sanitizedValue) || sanitizedValue < 0) {
-        sanitizedValue = '';
-      }else if (sanitizedValue > 99999) {
-        sanitizedValue = 99999
-      }
-      updatedExercises[index][name] = sanitizedValue;
-    }
     setExercises(updatedExercises);
   };
 
@@ -55,13 +46,6 @@ export default function WorkoutsCreation() {
       alert('User not authenticated, please login'); 
       return;
     }
-
-    const sanitizedExercise = exercises.map(exercise => ({
-      exerciseName: exercise.exerciseName.slice(0,100),
-      weight: Math.max(0,parseFloat(exercise.weight) || 0),
-      reps: Math.max(0,parseFloat(exercise.reps) || 0),
-      sets: Math.max(0,parseFloat(exercise.reps) || 0),
-    }));
 
     const data = {
       postDate : new Date(),

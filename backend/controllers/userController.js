@@ -6,11 +6,21 @@ const jwt = require('jsonwebtoken');
 const { where } = require('sequelize');
 
 async function registerUser (req, res) {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     console.log('Incoming request: POST /api/register');
     console.log('Request Body: ', req.body);
 
     try {
+        //check if email exists in db
+        const existingEmail = await User.findOne({ where: {email} });
+        console.log('Existing Email:', existingEmail);
+
+        if (existingEmail) {
+            console.log('Username already taken');
+            return res.status(400).json({ error: 'Email is already registered '});
+        }
+
+        //check if username exists in db
         const existingUser = await User.findOne({ where: {username} });
         console.log('Existing User:', existingUser);
 
@@ -20,13 +30,13 @@ async function registerUser (req, res) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({ username, password: hashedPassword});
+        const newUser = await User.create({ username, password: hashedPassword, email });
         res.json({message: 'User registered successfully'});
     } catch (error) {
         console.error('Error registering new user:', error);
 
         if (error.name === 'SequelizeUniqueConstraintError' || error.original.code === '23505') {
-            return res.status(400).json({ error: 'Username already taken' });
+            return res.status(400).json({ error: 'Username or Email already taken' });
         }
 
         res.status(400).json({error: error.message });
@@ -34,7 +44,7 @@ async function registerUser (req, res) {
 }
 
 async function signinUser (req, res) {
-    const { username, password} = req.body;
+    const { username, password } = req.body;
 
     try {
         const user = await User.findOne({ where: {username} });

@@ -43,16 +43,19 @@ export default function SigninPage() {
                         <input type="password" id="password" className="mt-2 appearance-none text-slate-900 bg-white rounded-md block w-full px-3 h-10 shadow-sm sm:text-sm focus:outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-sky-500 ring-1 ring-slate-300" 
                         required value={password} onChange={(event) => setPassword(event.target.value)}/>
                     </div>
+                    <div className="mb-4 justify-evenly flex">
+                        {message && <p>{message}</p>}
+                    </div>
                     <button type="submit" className="inline-flex justify-center rounded-lg text-sm font-semibold py-2.5 px-4 bg-zinc-900 text-white hover:bg-zinc-700 w-full">
                         <span>Sign in to account</span>
                     </button>
                 </form>
                 <p className="mt-8 text-center">
-                    <a href="/password/reset" className="text-sm hover:underline hidden">Forgot password?</a>
+                    <a href="/password/reset" className="text-sm hover:underline">Forgot password?</a>
                 </p>
             </div>
-            {message && <p> DEBUGGING {message}</p>}
-            {token && <p>DEBUGGING Token: {token}</p>}
+            
+            
             <footer className="relative shrink-0 text-white">
                 <div className="space-y-4 text-sm sm:flex sm:items-center sm:justify-center sm:space-x-4 sm:space-y-0">
                     <p className="text-center sm:text-left">Don't have an account?</p>

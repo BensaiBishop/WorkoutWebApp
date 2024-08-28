@@ -46,6 +46,8 @@ export default function WorkoutFeed ({currentUsername}) {
       };
 
     const fetchWorkouts = async () => {
+        if (!hasMore) return;
+
         try {
             const response = await axios.get(`http://localhost:3000/api/workouts?page=${page}&limit=${itemsPerPage}`);
             const fetchWorkouts = response.data.map(workout => ({
@@ -55,14 +57,15 @@ export default function WorkoutFeed ({currentUsername}) {
 
             //combine workouts by id to avoid displaying duplicates
             const uniqueWorkouts = [...new Set([...workouts, ...fetchWorkouts].map(workout => workout.id))]
-            .map(id => [...workouts, ...fetchWorkouts].find(workout => workout.id === id));
+                .map(id => [...workouts, ...fetchWorkouts].find(workout => workout.id === id));
+
             setWorkouts(uniqueWorkouts);
 
-            //setWorkouts((prevWorkouts) => [...prevWorkouts, ...response.data]);
             if(response.data.length < itemsPerPage) {
                 setHasMore(false);
             }
             setPage((prevPage) => prevPage + 1);
+
         } catch (error) {
             console.error('Error fetching workouts:', error);
         }
@@ -120,7 +123,11 @@ export default function WorkoutFeed ({currentUsername}) {
             <div className="overflow-auto">
                 <InfiniteScroll
                     dataLength={workouts.length}
-                    next={fetchWorkouts}
+                    next={() => {
+                        if (hasMore) {
+                            fetchWorkouts();
+                        }
+                    }}
                     hasMore={hasMore}
                     loader={<h1 className="px-5 opacity-5">Loading...</h1>}
                     className="workout-feed"

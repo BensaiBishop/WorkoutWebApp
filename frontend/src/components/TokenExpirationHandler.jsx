@@ -21,7 +21,7 @@ export default function TokenExpirationHandler() {
 
         const handleRenewSession = async() => {
             try {
-                const response = await axios.post("http://localhost:3000/api/renewToken", {token});
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/renewToken`, {token});
                 const newToken = response.data.token;
                 localStorage.setItem("token",newToken)
                 setToken(newToken);

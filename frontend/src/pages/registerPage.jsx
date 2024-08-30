@@ -18,7 +18,7 @@ export default function RegisterPage() {
     const checkUserNameAvailability = useCallback(
         debounce(async (username) => {
             try {
-                const response = await axios.post('http://localhost:3000/api/checkuserName', {username});
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/checkuserName`, {username});
                 setUserNameAvailable(response.data.exists ? false : true);
             } catch (error) {
                 console.log('Error checking username availability', error);
@@ -51,7 +51,7 @@ export default function RegisterPage() {
             return;
           }
         try {
-            const response = await axios.post('http://localhost:3000/api/register', {username, password, email});
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, {username, password, email});
             console.log('Response received', response);
             setMessage(response.data.message); 
             navigate('/signin');

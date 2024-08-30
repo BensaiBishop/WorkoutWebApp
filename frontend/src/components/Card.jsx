@@ -26,7 +26,7 @@ export default function Card ({ index, exercise, handleChange, handleRemove, han
             placeholder="Exercise"
             value={exercise.exerciseName || ''}
             onChange={(event) => handleChange(index, event)}
-            className="block border border-zinc-500 rounded mb-1 p-2"
+            className="block border border-zinc-500 rounded mb-1 p-2 required"
           />
           <div className='ml-auto'>
             <button className='p-2 bg-yellow-600 rounded w-14 hover:bg-yellow-800 text-zinc-700 font-semibold'

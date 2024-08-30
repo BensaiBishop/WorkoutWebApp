@@ -55,7 +55,7 @@ export default function WorkoutsCreation() {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/createWorkouts', data, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/createWorkouts`, data, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

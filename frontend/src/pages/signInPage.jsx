@@ -14,7 +14,7 @@ export default function SigninPage() {
     const handleSignin = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/signin', { username, password });
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/signin`, { username, password });
             const receivedToken = response.data.token;
             localStorage.setItem('token', receivedToken);
             localStorage.setItem('username', username);

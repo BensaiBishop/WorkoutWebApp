@@ -23,26 +23,42 @@ app.use((req, res, next) => {
 //Routes
 app.use('/api',router);
 
-//Start server
-app.listen(port, () => {
-  console.log(`
-    
-    API listening at http://localhost:${port}
-    
-    `);
-  db.sequelize.sync().then(() => {
+// Authenticate database connection
+sequelize.authenticate()
+  .then(() => {
     console.log(`
-      
-      Database Synced
-      
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Database connected successfully.
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       `);
-  }).catch(error => {
-    console.error(`
-      
-      Database sync failed:
-      
-      `, error);
+
+    // Sync the database
+    db.sequelize.sync().then(() => {
+      console.log(`
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Database synced successfully.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        `);
+    }).catch(error => {
+      console.error(`
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Database sync failed:`, error,
+       '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    });
+
+    // Start server
+    app.listen(port, () => {
+      console.log(`
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      API listening at http://localhost:${port}
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        `);
+    });
+
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err.message);
+    process.exit(1); // Exit process if unable to connect to the database
   });
-});
 
 

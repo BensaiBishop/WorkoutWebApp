@@ -26,6 +26,10 @@ export default function WorkoutFeed ({currentUsername}) {
 
     useEffect(() => {
         fetchWorkouts();
+
+        const intervalId = setInterval(() => {
+            fetchWorkouts(setWorkouts, setHasMore, setPage, page, itemsPerPage);
+        }, 60000);
     },[]);
 
     const openDeleteModal = (workoutId) => {
@@ -49,7 +53,7 @@ export default function WorkoutFeed ({currentUsername}) {
         if (!hasMore) return;
 
         try {
-            const response = await axios.get(`http://localhost:3000/api/workouts?page=${page}&limit=${itemsPerPage}`);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/workouts?page=${page}&limit=${itemsPerPage}`);
             const fetchWorkouts = response.data.map(workout => ({
                 ...workout,
                 postDate: new Date(workout.postDate).toLocaleDateString(), 
@@ -75,7 +79,7 @@ export default function WorkoutFeed ({currentUsername}) {
         event.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.put('http://localhost:3000/api/workouts', {
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/workouts`, {
                 token,
                 exerciseId: editingWorkoutId,
                 updates: editFormData,
@@ -93,7 +97,7 @@ export default function WorkoutFeed ({currentUsername}) {
         console.log('Deleting workout with ID:', selectedWorkout);
         const token = localStorage.getItem('token');
         try {
-            await axios.delete('http://localhost:3000/api/workouts',{
+            await axios.delete(`${import.meta.env.VITE_API_URL}/api/workouts`,{
                 data: {token, exerciseId:selectedWorkout}
             });
             setIsDeleteModalOpen(false);
